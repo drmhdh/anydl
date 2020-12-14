@@ -51,7 +51,8 @@ async def gdrive_upload(bot, update):
             custom_file_name = dl_url[int(dl_url.rindex("/")) + 1:int(dl_url.rindex("?"))]
         else:
             if dl_url.rindex("/") > -1 and dl_url.rindex("?") > -1:
-                custom_file_name = dl_url[int(dl_url.rindex("/")) + 1:int(dl_url.rindex("?"))]
+                m_url = dl_url[:dl_url.rindex("?")]
+                custom_file_name = m_url[int(m_url.rindex("/")) + 1:]
             else:
                 custom_file_name = dl_url[dl_url.rindex("/") + 1:]
         custom_file_name = urllib.parse.unquote(custom_file_name)
