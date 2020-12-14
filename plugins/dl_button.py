@@ -74,7 +74,17 @@ async def ddl_call_back(bot, update):
                 o = entity.offset
                 l = entity.length
                 youtube_dl_url = youtube_dl_url[o:o + l]
-    description = Translation.CUSTOM_CAPTION_UL_FILE
+    caption_str = ""
+    caption_str += "<b>"
+    caption_str += custom_file_name
+    caption_str += "</b>"
+    if Config.CHANNEL_URL is not None:
+        caption_str += "\n\nJoin and Support: "
+        caption_str += "<a href='"
+        caption_str += f"{Config.CHANNEL_URL}"
+        caption_str += "'>"
+        caption_str += f"{Config.CHANNEL_URL}"
+        caption_str += "</a>"
     start = datetime.now()
     await bot.edit_message_text(
         text=Translation.DOWNLOAD_START,
@@ -162,14 +172,14 @@ async def ddl_call_back(bot, update):
                 img.save(thumb_image_path, "JPEG")
                 # https://pillow.readthedocs.io/en/3.1.x/reference/Image.html#create-thumbnails
             else:
-                thumb_image_path = None
+                thumb_image_path = 'moviez_trends.jpg'
             start_time = time.time()
             # try to upload file
             if tg_send_type == "audio":
                 await bot.send_audio(
                     chat_id=update.message.chat.id,
                     audio=download_directory,
-                    caption=description,
+                    caption=caption_str,
                     duration=duration,
                     # performer=response_json["uploader"],
                     # title=response_json["title"],
@@ -188,7 +198,7 @@ async def ddl_call_back(bot, update):
                     chat_id=update.message.chat.id,
                     document=download_directory,
                     thumb=thumb_image_path,
-                    caption=description,
+                    caption=caption_str,
                     # reply_markup=reply_markup,
                     reply_to_message_id=update.message.reply_to_message.message_id,
                     progress=progress_for_pyrogram,
@@ -217,7 +227,7 @@ async def ddl_call_back(bot, update):
                 await bot.send_video(
                     chat_id=update.message.chat.id,
                     video=download_directory,
-                    caption=description,
+                    caption=caption_str,
                     duration=duration,
                     width=width,
                     height=height,

@@ -44,15 +44,25 @@ async def rename_doc(bot, update):
     TRChatBase(update.from_user.id, update.text, "rename")
     if (" " in update.text) and (update.reply_to_message is not None):
         cmd, file_name = update.text.split(" ", 1)
-        if len(file_name) > 64:
+        if len(file_name) > 128:
             await update.reply_text(
                 Translation.IFLONG_FILE_NAME.format(
-                    alimit="64",
+                    alimit="128",
                     num=len(file_name)
                 )
             )
             return
-        description = Translation.CUSTOM_CAPTION_UL_FILE
+        caption_str = ""
+        caption_str += "<b>"
+        caption_str += file_name
+        caption_str += "</b>"
+        if Config.CHANNEL_URL is not None:
+            caption_str += "\n\nJoin and Support: "
+            caption_str += "<a href='"
+            caption_str += f"{Config.CHANNEL_URL}"
+            caption_str += "'>"
+            caption_str += f"{Config.CHANNEL_URL}"
+            caption_str += "</a>"
         download_location = Config.DOWNLOAD_LOCATION + "/"
         a = await bot.send_message(
             chat_id=update.chat.id,
@@ -96,7 +106,8 @@ async def rename_doc(bot, update):
             logger.info(the_real_download_location)
             thumb_image_path = Config.DOWNLOAD_LOCATION + "/" + str(update.from_user.id) + ".jpg"
             if not os.path.exists(thumb_image_path):
-                thumb_image_path = None
+                logger.info('setting moviez_trends.jpg as thumbnail')
+                thumb_image_path = "moviez_trends.jpg"
             else:
                 width = 0
                 height = 0
@@ -120,7 +131,7 @@ async def rename_doc(bot, update):
                 chat_id=update.chat.id,
                 document=new_file_name,
                 thumb=thumb_image_path,
-                caption=description,
+                caption=caption_str,
                 # reply_markup=reply_markup,
                 reply_to_message_id=update.reply_to_message.message_id,
                 progress=progress_for_pyrogram,
