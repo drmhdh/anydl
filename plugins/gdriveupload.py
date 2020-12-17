@@ -50,7 +50,7 @@ async def gdrive_upload(bot, update):
         elif dl_url.find('seedr') > -1:
             custom_file_name = dl_url[int(dl_url.rindex("/")) + 1:int(dl_url.rindex("?"))]
         else:
-            if dl_url.rindex("/") > -1 and dl_url.rindex("?") > -1:
+            if dl_url.find("/") > -1 and dl_url.find("?") > -1:
                 m_url = dl_url[:dl_url.rindex("?")]
                 custom_file_name = m_url[int(m_url.rindex("/")) + 1:]
             else:
