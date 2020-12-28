@@ -4,9 +4,6 @@
 
 # the logging things
 import logging
-
-from pyrogram.types import MessageEntity
-
 logging.basicConfig(
     level=logging.DEBUG,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
@@ -14,6 +11,9 @@ logging.basicConfig(
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 LOGGER = logging.getLogger(__name__)
 
+import aiohttp
+
+from pyrogram.types import MessageEntity
 
 def extract_url_from_entity(entities: MessageEntity, text: str):
     url = None
