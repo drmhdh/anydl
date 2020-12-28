@@ -10,7 +10,7 @@ if bool(os.environ.get("WEBHOOK", False)):
 else:
     from config import Config
 
-@pyrogram.Client.on_message(pyrogram.Filters.command(["zagl"]))
+@pyrogram.Client.on_message(pyrogram.filters.command(["zagl"]))
 async def zagl_short_link(bot, update):
     update.command[0] = "zagl"
     txt = " ".join(update.command)
